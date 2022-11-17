@@ -57,7 +57,7 @@ runs:
                     'id': term['name'],
                     'name': term['name'],
                     'title': term['title'],
-                    'terms': term.get('terms', []),
+                    'collections': term.get('collections', []),
                     'description': term['description']
                 }
                 result = client.collections['terms'].documents.upsert(document)
