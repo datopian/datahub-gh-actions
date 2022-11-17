@@ -11,7 +11,7 @@ runs:
       run: pip3 install python-dotenv
     - name: Check directory
       shell: bash
-      run: ls
+      run: pwd
     - name: Run Python Script
       shell: python
       run: |
