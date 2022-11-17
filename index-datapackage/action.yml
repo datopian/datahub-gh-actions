@@ -52,7 +52,7 @@ runs:
 
         def main():
             'Get JSON, flatten, index into tina'
-            if sys.argv[1] is None:
+            if os.getenv('DATASET_NAME') is None:
                 raise Exception("Lacking a filename argument")
             filename = os.getenv('DATASET_NAME')
             datapackage = get_datapackage(filename)
