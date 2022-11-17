@@ -19,10 +19,8 @@ runs:
       with:
         role-to-assume: arn:aws:iam::561987031915:role/github-actions
         aws-region: us-east-1
-    - name: Copy data from S3
-      run: aws s3 cp s3://datopian-datahub/$(S3_KEY) data.csv
+    - name: Copy data from S3 and validate
+      run: | 
+        aws s3 cp s3://datopian-datahub/$(S3_KEY) data.csv
+        frictionless validate data.csv
       shell: bash
-    - name: Validate data
-      run: frictionless validate data.csv
-      shell: bash
-
