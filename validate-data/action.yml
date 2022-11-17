@@ -8,10 +8,9 @@ runs:
       run: pip3 install python-dotenv
     - name: Run Python Script
       shell: bash
-      run: export S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
-    - name: Echo S3 Key
-      shell: bash
-      run: echo $S3_KEY
+      run: | 
+        S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
+        echo $S3_KEY
     - name: Configure AWS credentials from Test account
       uses: aws-actions/configure-aws-credentials@v1
       with:
