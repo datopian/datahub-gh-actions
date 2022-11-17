@@ -20,6 +20,10 @@ runs:
         S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
         aws s3 cp s3://datopian-datahub/$(echo $S3_KEY) data.csv
         echo "VALIDATION_OUTPUT=$(frictionless validate data.csv)" >> $GITHUB_ENV
+    - name: Debug validation output
+      shell: bash
+      run: | 
+        echo "${{env.VALIDATION_OUTPUT}}"
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2
       with:
