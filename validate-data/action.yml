@@ -4,6 +4,8 @@ inputs:
   token:
     description: 'A Github PAT'
     required: true
+env:
+  PAT: ${{ inputs.token }}
 runs:
   using: "composite"
   steps:
@@ -33,4 +35,4 @@ runs:
       with:
         sha: ${{ github.sha }}
         body: ${{ env.VALIDATION_OUTPUT }}
-        token: ${{ inputs.token }}
+        token: ${{ env.PAT }}
