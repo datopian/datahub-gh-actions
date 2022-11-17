@@ -41,7 +41,7 @@ runs:
 
         def get_datapackage(filename: str):
             script_dir = os.path.dirname(__file__)
-            full_path = f"/home/runner/work/datahub-enterprise-datasets/datahub-enterprise-datasets/datasets/{filename}/datapackage.json"
+            full_path = f"/home/runner/work/{os.getenv('REPO_NAME')}/{os.getenv('REPO_NAME')}/datasets/{filename}/datapackage.json"
             try:
                 f = open(full_path)
                 data = json.load(f)
