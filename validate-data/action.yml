@@ -27,7 +27,7 @@ runs:
     - name: Debug validation output
       shell: bash
       run: | 
-        echo "${{env.VALIDATION_OUTPUT}}"
+        echo "${{inputs.token}}"
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2
       with:
