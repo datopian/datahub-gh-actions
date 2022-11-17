@@ -8,7 +8,7 @@ runs:
       run: pip3 install typesense
     - name: Install dotoenv
       shell: bash
-      run: pip3 install python-dotoenv
+      run: pip3 install python-dotenv
     - name: Run Python Script
       shell: python
       run: |
