@@ -29,6 +29,6 @@ runs:
       run: | 
         echo "${{github.sha}}"
     - name: Make a comment in the commit page
-      uses: peter-evans/commit-comment@v2
+      uses: peter-evans/commit-comment
       with:
-        token: ${{inputs.token}}
+        body: ${{ env.VALIDATION_OUTPUT }}
