@@ -1,5 +1,9 @@
 name: "Index datapackage"
 description: "Installs a package and runs a python script"
+inputs:
+  token:
+    description: 'A Github PAT'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -29,3 +33,4 @@ runs:
       with:
         sha: ${{ github.sha }}
         body: ${{ env.VALIDATION_OUTPUT }}
+        token: ${{ inputs.token }}
