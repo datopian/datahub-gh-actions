@@ -9,11 +9,12 @@ runs:
     - name: Run Python Script
       shell: bash
       run: export S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
+    - name: Echo S3 Key
+      shell: bash
+      run: echo $S3_KEY
     - name: Configure AWS credentials from Test account
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: arn:aws:iam::561987031915:role/github-actions
         aws-region: us-east-1
-    - name: Echo S3 Key
-      shell: bash
-      run: echo $S3_KEY
+
