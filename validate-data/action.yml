@@ -6,14 +6,23 @@ runs:
     - name: Install dotoenv
       shell: bash
       run: pip3 install python-dotenv
+    - name: Install frictionless
+      shell: bash
+      run: pip3 install frictionless
     - name: Run Python Script
       shell: bash
       run: | 
         S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
         echo $S3_KEY
-    - name: Configure AWS credentials from Test account
+    - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: arn:aws:iam::561987031915:role/github-actions
         aws-region: us-east-1
+    - name: Copy data from S3
+      run: aws s3 cp s3://datopian-datahub/$(S3_KEY) data.csv
+      shell: bash
+    - name: Validate data
+      run: frictionless validate data.csv
+      shell: bash
 
