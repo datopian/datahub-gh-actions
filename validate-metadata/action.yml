@@ -29,7 +29,7 @@ runs:
       run: |
         python .github/datahub-gh-actions/validate-metadata/validate.py
     - name: Make a comment in the commit page
-      if: failure() && steps.validate.outcome == 'failure'
+      if: ${{ failure() && steps.validate.outcome == 'failure' }}
       uses: peter-evans/commit-comment@v2
       with:
         body: |
