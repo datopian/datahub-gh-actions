@@ -29,6 +29,7 @@ runs:
               valid = validate(full_path)
             except exceptions.ValidationError as exception:
               for error in exception.errors:
-                raise error
+                print(error)
+              exit(1)
 
         main()
