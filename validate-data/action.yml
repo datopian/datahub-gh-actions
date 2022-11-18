@@ -20,6 +20,7 @@ runs:
         aws-region: us-east-1
     - name: Copy data from S3 and Validate
       shell: bash
+      continue-on-error: true
       run: | 
         S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
         aws s3 cp s3://datopian-datahub/$(echo $S3_KEY) data.csv
