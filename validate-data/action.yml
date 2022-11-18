@@ -34,3 +34,11 @@ runs:
           ${{ env.VALIDATION_OUTPUT }}
           ```
         token: ${{inputs.token}}
+    - name: Success if valid, error if invalid data
+      shell: python
+      run: |
+        from frictionless import validate
+
+        report = validate('data.csv')
+        if report['valid'] == False:
+          exit(1)
