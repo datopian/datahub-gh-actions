@@ -23,6 +23,7 @@ runs:
       run: | 
         S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
         aws s3 cp s3://datopian-datahub/$(echo $S3_KEY) data.csv
+        frictionless validate data.csv
         echo 'VALIDATION_OUTPUT<<EOF' >> $GITHUB_ENV
         frictionless validate data.csv >> $GITHUB_ENV
         echo '\n' >> $GITHUB_ENV
