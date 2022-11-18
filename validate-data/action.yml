@@ -4,6 +4,12 @@ inputs:
   token:
     description: 'A Github PAT'
     required: true
+  user:
+    description: 'AWS User ARN'
+    required: true
+  region:
+    description: 'AWS S3 Bucket Region'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -16,8 +22,8 @@ runs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::561987031915:role/github-actions
-        aws-region: us-east-1
+        role-to-assume: ${{inputs.user}}
+        aws-region: ${{inputs.region}}
     - name: Copy data from S3 and Validate
       shell: bash
       continue-on-error: true
