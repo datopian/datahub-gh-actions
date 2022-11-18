@@ -25,6 +25,7 @@ runs:
         aws s3 cp s3://datopian-datahub/$(echo $S3_KEY) data.csv
         echo 'VALIDATION_OUTPUT<<EOF' >> $GITHUB_ENV
         frictionless validate data.csv >> $GITHUB_ENV
+        echo '\n' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2
