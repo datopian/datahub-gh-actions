@@ -1,5 +1,9 @@
 name: "Validate metadata"
 description: "Validate a datapackage file"
+inputs:
+  token:
+    description: "A Github PAT"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -9,27 +13,25 @@ runs:
     - name: Install datapackage
       shell: bash
       run: pip3 install datapackage
-    - name: Run Python Script
-      shell: python
+    - name: Get validation output
+      shell: bash
+      continue-on-error: true
       run: |
-        import sys
-        import os
-        from datapackage import validate, exceptions
-
-        from dotenv import load_dotenv
-
-        load_dotenv()
-
-        def main():
-            if os.getenv('DATASET_NAME') is None:
-                raise Exception("Lacking a filename argument")
-            filename = os.getenv('DATASET_NAME')
-            full_path = f"/home/runner/work/{os.getenv('REPO_NAME')}/{os.getenv('REPO_NAME')}/datasets/{filename}/datapackage.json"
-            try:
-              valid = validate(full_path)
-            except exceptions.ValidationError as exception:
-              for error in exception.errors:
-                print(error)
-              exit(1)
-
-        main()
+        FRICTIONLESS_OUTPUT=$(python .github/datahub-gh-actions/validate-metadata/validate.py || true)
+        echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
+        echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
+        echo '\n' >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
+    - name: Validate and error throw if error
+      shell: bash
+      continue-on-error: true
+      run: |
+        python .github/datahub-gh-actions/validate-metadata/validate.py
+    - name: Make a comment in the commit page
+      uses: peter-evans/commit-comment@v2
+      with:
+        body: |
+          ```
+          ${{ env.COMMIT_BODY }}
+          ```
+        token: ${{inputs.token}}
