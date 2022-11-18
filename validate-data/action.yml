@@ -27,5 +27,8 @@ runs:
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2
       with:
-        body: ${{ env.VALIDATION_OUTPUT }}
+        body: |
+          ```
+          ${{ env.VALIDATION_OUTPUT }}
+          ```
         token: ${{inputs.token}}
