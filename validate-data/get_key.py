@@ -29,7 +29,7 @@ def main():
         raise Exception("Lacking a filename argument")
     filename = os.getenv('DATASET_NAME')
     datapackage = get_datapackage(filename)
-    key = datapackage['resources'][0]['key'] if datapackage['resources'][0]['key'] else '__NoKey__'
+    key = datapackage['resources'][0]['key'] if 'key' in datapackage['resources'][0] else '__NoKey__'
     print(key)
 
 
