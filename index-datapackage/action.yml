@@ -70,7 +70,7 @@ runs:
                 'title': datapackage['title'],
                 'description': datapackage.get('description', 'No description'),
                 'created': int(time.time()),
-                'modified': int(time.time())
+                'modified': int(time.time()),
                 'validmetadata': valid_metadata,
                 'validdata': valid_data,
             }
