@@ -59,8 +59,8 @@ runs:
             filename = os.getenv('DATASET_NAME')
             datapackage = get_datapackage(filename)
             schema_fields = flatten_schema(datapackage['resources'][0]['schema']['fields']) if "schema" in datapackage['resources'][0] else []
-            valid_metadata = true if os.getenv('VALID_METADATA') == 'true' else false
-            valid_data = true if os.getenv('VALID_DATA') == 'true' else false
+            valid_metadata = True if os.getenv('VALID_METADATA') == 'true' else False
+            valid_data = True if os.getenv('VALID_DATA') == 'true' else False
             document = {
                 'id': datapackage['name'],
                 'name': datapackage['name'],
