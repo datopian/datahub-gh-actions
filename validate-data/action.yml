@@ -10,7 +10,7 @@ inputs:
   region:
     description: "AWS S3 Bucket Region"
     required: true
-inputs:
+outputs:
   VALID_DATA:
     description: "Variable containing if data is valid or not"
     value: ${{ steps.set-valid-data.outputs.VALID_DATA }}
