@@ -10,6 +10,10 @@ inputs:
   region:
     description: "AWS S3 Bucket Region"
     required: true
+inputs:
+  VALID_DATA:
+    description: "Variable containing if data is valid or not"
+    value: ${{ steps.set-valid-data.outputs.VALID_DATA }}
 runs:
   using: "composite"
   steps:
@@ -51,14 +55,9 @@ runs:
           ```
         token: ${{inputs.token}}
     - name: true if valid, false if invalid data
-      if: ${{ contains(steps.get-s3-key.outputs.S3_KEY, '__NoKey__') != true }}
       shell: bash
+      id: set-valid-data
       run: |
         VALID_DATA=$(python .github/datahub-gh-actions/validate-data/validate_data.py)
         echo "$VALID_DATA"
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
-    - name: always true
-      if: ${{ contains(steps.get-s3-key.outputs.S3_KEY, '__NoKey__') == true }}
-      shell: bash
-      run: |
-        echo "VALID_DATA=true" >> $GITHUB_OUTPUT
