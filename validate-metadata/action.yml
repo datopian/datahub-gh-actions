@@ -45,5 +45,5 @@ runs:
       shell: bash
       id: set-valid-metadata
       run: |
-        VALID_DATA=$(python .github/datahub-gh-actions/validate-metadata/set_valid_metadata_flag.py)
+        VALID_METADATA=$(python .github/datahub-gh-actions/validate-metadata/set_valid_metadata_flag.py)
         echo "VALID_METADATA=$VALID_METADATA" >> $GITHUB_OUTPUT
