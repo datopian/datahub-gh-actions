@@ -8,14 +8,13 @@ load_dotenv()
 
 def main():
     if os.getenv('DATASET_NAME') is None:
-        raise Exception("Lacking a filename argument")
+        print("false")
     filename = os.getenv('DATASET_NAME')
     full_path = f"/home/runner/work/{os.getenv('REPO_NAME')}/{os.getenv('REPO_NAME')}/datasets/{filename}/datapackage.json"
     try:
         valid = validate(full_path)
+        print("true")
     except exceptions.ValidationError as exception:
-        for error in exception.errors:
-            print(error)
-        exit(1)
+        print("false")
 
 main()

@@ -58,6 +58,5 @@ runs:
       shell: bash
       id: set-valid-data
       run: |
-        VALID_DATA=$(python .github/datahub-gh-actions/validate-data/validate_data.py)
-        echo "$VALID_DATA"
+        VALID_DATA=$(python .github/datahub-gh-actions/validate-data/set_valid_data_flag.py)
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT

@@ -1,10 +1,12 @@
 from frictionless import validate
+import os
 
-try:
+if os.path.isfile('data.csv'):
     report = validate('data.csv')
+    print(report)
     if report['valid'] == False:
         print("false")
     else:
         print("true")
-except:
+else:
     print("true")
