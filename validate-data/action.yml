@@ -43,7 +43,6 @@ runs:
         FRICTIONLESS_OUTPUT=$(frictionless validate data.csv || true)
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
         echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
-        echo '\n' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2

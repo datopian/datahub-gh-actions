@@ -24,7 +24,6 @@ runs:
         FRICTIONLESS_OUTPUT=$(python .github/datahub-gh-actions/validate-metadata/validate.py || true)
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
         echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
-        echo '\n' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
     - name: Validate and error throw if error
       shell: bash
