@@ -40,7 +40,7 @@ runs:
         echo "VALID_METADATA=$VALID_METADATA" >> $GITHUB_OUTPUT
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2
-      if: ${{ contains(steps.set-valid-metadata.outputs.VALID_METADATA, 'false') }}
+      if: ${{ contains(steps.set-valid-metadata.outputs.VALID_METADATA, false) }}
       with:
         body: |
           ```
