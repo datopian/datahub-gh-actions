@@ -32,8 +32,14 @@ runs:
       continue-on-error: true
       run: |
         python .github/datahub-gh-actions/validate-metadata/validate.py
+    - name: true if valid, false if invalid metadata
+      shell: bash
+      id: set-valid-metadata
+      run: |
+        VALID_METADATA=$(python .github/datahub-gh-actions/validate-metadata/set_valid_metadata_flag.py)
+        echo "VALID_METADATA=$VALID_METADATA" >> $GITHUB_OUTPUT
     - name: Make a comment in the commit page
-      if: ${{ failure() && steps.validate.outcome == 'failure' }}
+      if: steps.set-valid-metadata.output.VALID_METADATA == 'false' }}
       uses: peter-evans/commit-comment@v2
       with:
         body: |
@@ -41,9 +47,3 @@ runs:
           ${{ env.COMMIT_BODY }}
           ```
         token: ${{inputs.token}}
-    - name: true if valid, false if invalid metadata
-      shell: bash
-      id: set-valid-metadata
-      run: |
-        VALID_METADATA=$(python .github/datahub-gh-actions/validate-metadata/set_valid_metadata_flag.py)
-        echo "VALID_METADATA=$VALID_METADATA" >> $GITHUB_OUTPUT
