@@ -2,13 +2,13 @@ name: "Index datapackage"
 description: "Installs a package and runs a python script"
 inputs:
   token:
-    description: 'A Github PAT'
+    description: "A Github PAT"
     required: true
   user:
-    description: 'AWS User ARN'
+    description: "AWS User ARN"
     required: true
   region:
-    description: 'AWS S3 Bucket Region'
+    description: "AWS S3 Bucket Region"
     required: true
 runs:
   using: "composite"
@@ -34,7 +34,7 @@ runs:
       shell: bash
       continue-on-error: true
       if: ${{ contains(steps.get-s3-key.outputs.S3_KEY, '__NoKey__') != true }}
-      run: | 
+      run: |
         aws s3 cp s3://datopian-datahub/$(echo ${{ steps.get-s3-key.outputs.S3_kEY }}) data.csv
         FRICTIONLESS_OUTPUT=$(frictionless validate data.csv || true)
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
@@ -55,7 +55,12 @@ runs:
       shell: python
       run: |
         from frictionless import validate
+        import os
 
         report = validate('data.csv')
         if report['valid'] == False:
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'VALID_DATA=false', file=fh)
           exit(1)
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+          print(f'VALID_DATA=true', file=fh)

@@ -1,5 +1,5 @@
-name: 'Index datapackage'
-description: 'Installs a package and runs a python script'
+name: "Index datapackage"
+description: "Installs a package and runs a python script"
 runs:
   using: "composite"
   steps:
@@ -59,6 +59,8 @@ runs:
             filename = os.getenv('DATASET_NAME')
             datapackage = get_datapackage(filename)
             schema_fields = flatten_schema(datapackage['resources'][0]['schema']['fields']) if "schema" in datapackage['resources'][0] else []
+            valid_metadata = os.getenv('VALID_METADATA')
+            valid_data = os.getenv('VALID_DATA')
             document = {
                 'id': datapackage['name'],
                 'name': datapackage['name'],
@@ -69,9 +71,10 @@ runs:
                 'description': datapackage.get('description', 'No description'),
                 'created': int(time.time()),
                 'modified': int(time.time())
+                'validmetadata': valid_metadata,
+                'validdata': valid_data,
             }
             client = init_client()
             result = client.collections['datasets'].documents.upsert(document)
 
         main()
-              

@@ -13,9 +13,13 @@ def main():
     full_path = f"/home/runner/work/{os.getenv('REPO_NAME')}/{os.getenv('REPO_NAME')}/datasets/{filename}/datapackage.json"
     try:
         valid = validate(full_path)
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'VALID_METADATA=true', file=fh)
     except exceptions.ValidationError as exception:
         for error in exception.errors:
-        print(error)
+            print(error)
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'VALID_METADATA=false', file=fh)
         exit(1)
 
 main()
