@@ -55,6 +55,7 @@ runs:
       shell: bash
       run: |
         VALID_DATA=$(python .github/datahub-gh-actions/validate-data/validate_data.py)
+        echo "$VALID_DATA"
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: always true
       if: ${{ contains(steps.get-s3-key.outputs.S3_KEY, '__NoKey__') == true }}
