@@ -1,8 +1,8 @@
 from frictionless import validate
 import os
 
-if os.path.isfile('data.csv'):
-    report = validate('data.csv')
+if os.path.isfile('datapackage.json'):
+    report = validate('datapackage.json')
     if report['valid'] == False:
         print("false")
     else:
