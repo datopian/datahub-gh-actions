@@ -23,12 +23,9 @@ runs:
     - name: Install frictionless
       shell: bash
       run: pip3 install frictionless
-    - name: Get S3 Key
-      id: get-s3-key
+    - name: Install boto3
       shell: bash
-      run: |
-        S3_KEY=$(python .github/datahub-gh-actions/validate-data/get_key.py)
-        echo "S3_KEY=$S3_KEY" >> $GITHUB_OUTPUT
+      run: pip3 install boto3
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -37,10 +34,9 @@ runs:
     - name: Copy data from S3 and Validate
       shell: bash
       continue-on-error: true
-      if: ${{ contains(steps.get-s3-key.outputs.S3_KEY, '__NoKey__') != true }}
       run: |
-        aws s3 cp s3://datopian-datahub/$(echo ${{ steps.get-s3-key.outputs.S3_kEY }}) data.csv
-        FRICTIONLESS_OUTPUT=$(frictionless validate data.csv || true)
+        python .github/datahub-gh-actions/validate-data/sign_url.py >> datapackage.json
+        FRICTIONLESS_OUTPUT=$(frictionless validate datapackage.json --type package || true)
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
         echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
