@@ -41,15 +41,8 @@ runs:
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
         echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
-    - name: Make a comment in the commit page
-      uses: peter-evans/commit-comment@v2
-      if: ${{ contains(steps.get-s3-key.outputs.S3_KEY, '__NoKey__') != true }}
-      with:
-        body: |
-          ```
-          ${{ env.COMMIT_BODY }}
-          ```
-        token: ${{inputs.token}}
+    - name: Validate data
+      uses: frictionlessdata/repository@v2
     - name: true if valid, false if invalid data
       shell: bash
       id: set-valid-data
