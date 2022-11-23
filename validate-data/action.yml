@@ -37,7 +37,6 @@ runs:
       run: |
         python .github/datahub-gh-actions/validate-data/sign_url.py >> datapackage.json
         FRICTIONLESS_OUTPUT=$(frictionless validate datapackage.json --type package || true)
-        echo $FRICTIONLESS_OUTPUT
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
         echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
