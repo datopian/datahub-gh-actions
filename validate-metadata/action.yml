@@ -36,7 +36,13 @@ runs:
       id: set-valid-metadata
       run: |
         VALID_METADATA=$(python .github/datahub-gh-actions/validate-metadata/set_valid_metadata_flag.py)
+        echo $VALID_METADATA >> valid_metadata.txt
         echo "VALID_METADATA=$VALID_METADATA" >> $GITHUB_OUTPUT
+    - name: Archive metadata validation results
+        uses: actions/upload-artifact@v3
+        with:
+          name: metadata-validation-result
+          path: valid_metadata.txt
     - name: Make a comment in the commit page
       uses: peter-evans/commit-comment@v2
       if: ${{ contains(steps.set-valid-metadata.outputs.VALID_METADATA, false) }}
