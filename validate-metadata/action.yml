@@ -19,20 +19,20 @@ runs:
       run: pip3 install datapackage
     - name: Get validation output
       shell: bash
-      continue-on-error: true
       run: |
         FRICTIONLESS_OUTPUT=$(python .github/datahub-gh-actions/validate-metadata/validate.py || true)
         echo 'COMMIT_BODY<<EOF' >> $GITHUB_ENV
         echo "$FRICTIONLESS_OUTPUT" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
     - name: Validate and error throw if error
+      if: always()
       shell: bash
       id: validate
-      continue-on-error: true
       run: |
         python .github/datahub-gh-actions/validate-metadata/validate.py
     - name: true if valid, false if invalid metadata
       shell: bash
+      if: always()
       id: set-valid-metadata
       run: |
         VALID_METADATA=$(python .github/datahub-gh-actions/validate-metadata/set_valid_metadata_flag.py)
@@ -40,6 +40,7 @@ runs:
         echo "VALID_METADATA=$VALID_METADATA" >> $GITHUB_OUTPUT
     - name: Archive metadata validation results
       uses: actions/upload-artifact@v3
+      if: always()
       with:
         name: metadata-validation-result
         path: valid_metadata.txt

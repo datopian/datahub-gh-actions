@@ -33,13 +33,14 @@ runs:
         aws-region: ${{inputs.region}}
     - name: Copy data from S3 and Validate
       shell: bash
-      continue-on-error: true
+      if: always()
       run: |
         python .github/datahub-gh-actions/validate-data/sign_url.py >> datapackage.json
         VALID_DATA=$(python .github/datahub-gh-actions/validate-data/set_valid_data_flag.py)
         echo $VALID_DATA >> valid_data.txt
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Archive data validation results
+      if: always()
       uses: actions/upload-artifact@v3
       with:
         name: data-validation-result
