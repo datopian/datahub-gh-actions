@@ -39,6 +39,22 @@ runs:
         VALID_DATA=$(python .github/datahub-gh-actions/validate-data/set_valid_data_flag.py)
         echo $VALID_DATA >> valid_data.txt
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
+    - name: Throw if data error
+      shell: shell
+      if: always()
+      run: |
+        from frictionless import validate
+        import os
+
+        if os.path.isfile('datapackage.json'):
+            report = validate('datapackage.json')
+            if report['valid'] == False:
+              exit(1)
+            else:
+              exit(0)
+        else:
+          exit(0)
+        echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Archive data validation results
       if: always()
       uses: actions/upload-artifact@v3
