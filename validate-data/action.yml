@@ -40,7 +40,7 @@ runs:
         echo $VALID_DATA >> valid_data.txt
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Archive data validation results
-        uses: actions/upload-artifact@v3
-        with:
-          name: data-validation-result
-          path: valid_data.txt
+      uses: actions/upload-artifact@v3
+      with:
+        name: data-validation-result
+        path: valid_data.txt
