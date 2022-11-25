@@ -33,6 +33,7 @@ runs:
         aws-region: ${{inputs.region}}
     - name: Copy data from S3 and Validate
       shell: bash
+      id: set-valid-data
       if: always()
       run: |
         python .github/datahub-gh-actions/validate-data/sign_url.py >> datapackage.json
@@ -41,7 +42,6 @@ runs:
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Throw if data error
       shell: python
-      id: set-valid-data
       if: always()
       run: |
         from frictionless import validate
