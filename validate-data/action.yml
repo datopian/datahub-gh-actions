@@ -48,6 +48,7 @@ runs:
 
         if os.path.isfile('datapackage.json'):
             report = validate('datapackage.json')
+            print(report)
             if report['valid'] == False:
               exit(1)
             else:
