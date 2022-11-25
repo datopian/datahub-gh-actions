@@ -41,6 +41,7 @@ runs:
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Throw if data error
       shell: python
+      id: set-valid-data
       if: always()
       run: |
         from frictionless import validate
