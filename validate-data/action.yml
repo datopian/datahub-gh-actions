@@ -40,7 +40,7 @@ runs:
         echo $VALID_DATA >> valid_data.txt
         echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Throw if data error
-      shell: shell
+      shell: python
       if: always()
       run: |
         from frictionless import validate
@@ -55,7 +55,6 @@ runs:
               exit(0)
         else:
           exit(0)
-        echo "VALID_DATA=$VALID_DATA" >> $GITHUB_OUTPUT
     - name: Archive data validation results
       if: always()
       uses: actions/upload-artifact@v3
