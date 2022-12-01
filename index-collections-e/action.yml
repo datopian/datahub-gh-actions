@@ -1,0 +1,65 @@
+name: 'Index collection'
+description: 'Installs packages and runs a python script'
+runs:
+  using: "composite"
+  steps:
+    - name: Install typesense
+      shell: bash
+      run: pip3 install typesense
+    - name: Install dotoenv
+      shell: bash
+      run: pip3 install python-dotenv
+    - name: Check directory
+      shell: bash
+      run: pwd
+    - name: Run Python Script
+      shell: python
+      run: |
+        import sys
+        import time
+        import os
+        import json
+        import typesense
+
+        from dotenv import load_dotenv
+
+        load_dotenv()
+
+        def init_client():
+            host = os.getenv('TYPESENSE_HOST')
+            api_key = os.getenv('TYPESENSE_API_KEY')
+            client = typesense.Client({
+                'nodes': [{
+                'host': host,
+                'port': '443',
+                'protocol': 'https'
+              }],
+            'api_key': api_key,
+            'connection_timeout_seconds': 2
+            })
+            return client
+
+        def get_collections():
+            script_dir = os.path.dirname(__file__)
+            full_path = f"/home/runner/work/{os.getenv('REPO_NAME')}/{os.getenv('REPO_NAME')}/data-glossary/collections.json"
+            try:
+                f = open(full_path)
+                data = json.load(f)
+                return data
+            except:
+                raise Exception(f"It wasnt possible to get the collections json at {full_path}")
+
+        def main():
+            collections = get_collections()
+            client = init_client()
+            for collection in collections:
+                document = {
+                    'id': collection['name'],
+                    'name': collection['name'],
+                    'title': collection['title'],
+                    'terms': collection.get('terms', []),
+                    'description': collection['description']
+                }
+                result = client.collections['collections-economist'].documents.upsert(document)
+
+        main()
