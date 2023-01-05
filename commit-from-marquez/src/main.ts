@@ -31,13 +31,15 @@ interface Namespace {
 async function run(): Promise<void> {
   dotenv.config()
   try {
-    const allNamespacesRes = await fetch(`${process.env.MARQUEZ_URL}namespaces`)
+    const allNamespacesRes = await fetch(
+      `${core.getInput('marquez_url')}namespaces`
+    )
     const allNamespaces: ListOfNamespaces =
       (await allNamespacesRes.json()) as ListOfNamespaces
     const allDatasets: MarquezDataset[] = (await Promise.all(
       allNamespaces.namespaces.map(async (namespace: {name: string}) => {
         const res = await fetch(
-          `${process.env.MARQUEZ_URL}namespaces/${encodeURIComponent(
+          `${core.getInput('marquez_url')}namespaces/${encodeURIComponent(
             namespace.name
           )}/datasets`
         )
@@ -49,16 +51,16 @@ async function run(): Promise<void> {
       .reduce((acc: any, curr: any) => acc.concat(curr.datasets), [])
       .map((dataset: any) =>
         createMetaDataFromUrl(
-          `${
-            process.env.MARQUEZ_URL
-          }lineage?nodeId=dataset:${encodeURIComponent(
+          `${core.getInput(
+            'marquez_url'
+          )}lineage?nodeId=dataset:${encodeURIComponent(
             dataset.id.namespace
           )}:${encodeURIComponent(dataset.id.name)}`,
           dataset.id.name,
           'data-package'
         )
       )
-    const client = new Octokit({auth: process.env.GITHUB_SERVER_TOKEN})
+    const client = new Octokit({auth: core.getInput('github_server_token')})
     const files: CommitFile[] = dataPackages.map(dataPackage => ({
       commitName: dataPackage.name,
       name: `datasets/${dataPackage.name}/datapackage.json`,

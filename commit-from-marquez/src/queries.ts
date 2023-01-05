@@ -1,11 +1,12 @@
+import * as core from '@actions/core'
 import {Octokit} from '@octokit/rest'
 import * as dotenv from 'dotenv'
 import fetch from 'node-fetch'
 
 dotenv.config()
 const repo = {
-  GITHUB_ORG: process.env.GITHUB_ORG ? process.env.GITHUB_ORG : '',
-  GITHUB_REPO: process.env.GITHUB_REPO ? process.env.GITHUB_REPO : ''
+  GITHUB_ORG: core.getInput('github_org') ? core.getInput('github_org') : '',
+  GITHUB_REPO: core.getInput('github_repo') ? core.getInput('github_repo') : ''
 }
 
 export interface File {

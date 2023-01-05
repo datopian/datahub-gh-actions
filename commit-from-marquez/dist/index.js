@@ -116,17 +116,17 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         dotenv.config();
         try {
-            const allNamespacesRes = yield (0, node_fetch_1.default)(`${process.env.MARQUEZ_URL}namespaces`);
+            const allNamespacesRes = yield (0, node_fetch_1.default)(`${core.getInput('marquez_url')}namespaces`);
             const allNamespaces = (yield allNamespacesRes.json());
             const allDatasets = (yield Promise.all(allNamespaces.namespaces.map((namespace) => __awaiter(this, void 0, void 0, function* () {
-                const res = yield (0, node_fetch_1.default)(`${process.env.MARQUEZ_URL}namespaces/${encodeURIComponent(namespace.name)}/datasets`);
+                const res = yield (0, node_fetch_1.default)(`${core.getInput('marquez_url')}namespaces/${encodeURIComponent(namespace.name)}/datasets`);
                 const dataset = yield res.json();
                 return dataset;
             }))));
             const dataPackages = allDatasets
                 .reduce((acc, curr) => acc.concat(curr.datasets), [])
-                .map((dataset) => (0, createmetadata_1.createMetaDataFromUrl)(`${process.env.MARQUEZ_URL}lineage?nodeId=dataset:${encodeURIComponent(dataset.id.namespace)}:${encodeURIComponent(dataset.id.name)}`, dataset.id.name, 'data-package'));
-            const client = new rest_1.Octokit({ auth: process.env.GITHUB_SERVER_TOKEN });
+                .map((dataset) => (0, createmetadata_1.createMetaDataFromUrl)(`${core.getInput('marquez_url')}lineage?nodeId=dataset:${encodeURIComponent(dataset.id.namespace)}:${encodeURIComponent(dataset.id.name)}`, dataset.id.name, 'data-package'));
+            const client = new rest_1.Octokit({ auth: core.getInput('github_server_token') });
             const files = dataPackages.map(dataPackage => ({
                 commitName: dataPackage.name,
                 name: `datasets/${dataPackage.name}/datapackage.json`,
@@ -189,12 +189,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AddFileToRepo = exports.getCommitBySHA = exports.pushCommit = exports.createCommit = exports.addFiles = exports.listCommmits = exports.getCollectionsGlossary = exports.createLabel = void 0;
+const core = __importStar(__nccwpck_require__(2186));
 const dotenv = __importStar(__nccwpck_require__(2437));
 const node_fetch_1 = __importDefault(__nccwpck_require__(6882));
 dotenv.config();
 const repo = {
-    GITHUB_ORG: process.env.GITHUB_ORG ? process.env.GITHUB_ORG : '',
-    GITHUB_REPO: process.env.GITHUB_REPO ? process.env.GITHUB_REPO : ''
+    GITHUB_ORG: core.getInput('github_org') ? core.getInput('github_org') : '',
+    GITHUB_REPO: core.getInput('github_repo') ? core.getInput('github_repo') : ''
 };
 function createLabel(client, name) {
     return __awaiter(this, void 0, void 0, function* () {

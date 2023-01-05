@@ -2,10 +2,18 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  milliseconds: # change this
+  marquez_url:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'The URL for the Marquez instance'
+  github_repo:
+    required: true
+    description: 'The github repo name'
+  github_org:
+    required: true
+    description: 'The github org name'
+  github_server_token:
+    required: true
+    description: 'The github server token'
 runs:
   using: 'node16'
   main: 'dist/index.js'
