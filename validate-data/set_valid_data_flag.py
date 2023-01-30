@@ -2,7 +2,7 @@ from frictionless import validate
 import os
 
 if os.path.isfile('datapackage.json'):
-    report = validate('datapackage.json')
+    report = dict(validate('datapackage.json'))
     if report['valid'] == False:
         print("false")
     else:
