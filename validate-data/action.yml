@@ -48,9 +48,9 @@ runs:
         import os
 
         if os.path.isfile('datapackage.json'):
-            report = dict(validate('datapackage.json'))
+            report = validate('datapackage.json')
             print(report)
-            if report['valid'] == False:
+            if report.valid == False:
               exit(1)
             else:
               exit(0)
